@@ -64,17 +64,17 @@ void sigint_handler(int signal);
 void sigwinch_handler(int signal);
 
 void generate_random_string(char *str, size_t size) {
-    const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+	const char charset[] = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
 	if (size){
-        --size;
-        srand(time(NULL));
-        for (size_t n = 0; n < size; n++) {
-            int key = rand() % (int)(sizeof(charset) -1);
-            str[n] = charset[key];
-        }
-        str[size] = '\0';
-    }
+		--size;
+		srand(time(NULL));
+		for (size_t n = 0; n < size; n++) {
+			int key = rand() % (int)(sizeof(charset) -1);
+			str[n] = charset[key];
+		}
+		str[size] = '\0';
+	}
 
 	return;
 }
@@ -82,39 +82,39 @@ void generate_random_string(char *str, size_t size) {
 // Provides nice colorful output, similar to Python `print(colored("foo"))`
 // ChatGPT helped with providing string formatting (va_list, va_start, etc)
 void print(int mode, char *msg, ...){
-    va_list args;
-    va_start(args, msg);
+	va_list args;
+	va_start(args, msg);
 
-    switch (mode){
-        case ISOK:
-            fprintf(stderr, "%s[+] ", green);
-            vfprintf(stderr, msg, args);
-            fprintf(stderr, "\e[0m");
-            break;
-
-        case ISER:
-            fprintf(stderr, "%s[-] ", red);
+	switch (mode){
+		case ISOK:
+			fprintf(stderr, "%s[+] ", green);
 			vfprintf(stderr, msg, args);
 			fprintf(stderr, "\e[0m");
 			break;
 
-        case ISST:
-            fprintf(stderr, "%s[*] ", yellow);
-            vfprintf(stderr, msg, args);
-            fprintf(stderr, "\e[0m");
-            break;
+		case ISER:
+			fprintf(stderr, "%s[-] ", red);
+			vfprintf(stderr, msg, args);
+			fprintf(stderr, "\e[0m");
+			break;
 
-        case ISNI:
-            fprintf(stderr, "%s[*] ", cyan);
-            vfprintf(stderr, msg, args);
-            fprintf(stderr, "\e[0m");
-            break;
-        }
+		case ISST:
+			fprintf(stderr, "%s[*] ", yellow);
+			vfprintf(stderr, msg, args);
+			fprintf(stderr, "\e[0m");
+			break;
 
-    va_end(args);
-    fflush(stderr);
+		case ISNI:
+			fprintf(stderr, "%s[*] ", cyan);
+			vfprintf(stderr, msg, args);
+			fprintf(stderr, "\e[0m");
+			break;
+		}
 
-    return;
+	va_end(args);
+	fflush(stderr);
+
+	return;
 }
 
 // Flush all standard I/O streams
@@ -278,30 +278,30 @@ bool run(const char command[]){
 // Provides asynchronous I/O operations between STDIN and the socket (client) using `select`
 bool sstdio(void){
 	fd_set readfds;
-    int maxfd = client + 1;
-    char buffer[SBUFFSIZE];
-    char ibuffer[IBUFFSIZE];
-    ssize_t size, n;
+	int maxfd = client + 1;
+	char buffer[SBUFFSIZE];
+	char ibuffer[IBUFFSIZE];
+	ssize_t size, n;
 
-    while (true){
+	while (true){
 		FD_ZERO(&readfds);
-        FD_SET(client, &readfds);
-        FD_SET(STDIN_FILENO, &readfds);
+		FD_SET(client, &readfds);
+		FD_SET(STDIN_FILENO, &readfds);
 
-        select(maxfd, &readfds, NULL, NULL, NULL);
+		select(maxfd, &readfds, NULL, NULL, NULL);
 		
 		// Read from `client` (socket) and write to STDOUT
-        if (FD_ISSET(client, &readfds)) {
-            size = read(client, buffer, SBUFFSIZE);
+		if (FD_ISSET(client, &readfds)) {
+			size = read(client, buffer, SBUFFSIZE);
 			if (size == -1){
 				fprintf(stderr, "%s: read error: %s\n", self, strerror(errno));
 				break;
 			}
 
-            if (size == 0) {
-                mode == SERVER ? print(ISER, "Connection %s:%d closed by remote host", clientIP, cport) : print(ISER, "Connection %s:%d closed by remote host", rhost, port);
+			if (size == 0) {
+				mode == SERVER ? print(ISER, "Connection %s:%d closed by remote host", clientIP, cport) : print(ISER, "Connection %s:%d closed by remote host", rhost, port);
 				break;
-            }
+			}
 			
 			// We don't want to show output if `noSockCode` is in the data
 			if (strstr(buffer, noSockCode)){
@@ -317,22 +317,22 @@ bool sstdio(void){
 		}
 		
 		// Read from STDIN and write to socket (client)
-        if (FD_ISSET(STDIN_FILENO, &readfds) && LOCAL == false) {
-            size = read(STDIN_FILENO, ibuffer, IBUFFSIZE);
+		if (FD_ISSET(STDIN_FILENO, &readfds) && LOCAL == false) {
+			size = read(STDIN_FILENO, ibuffer, IBUFFSIZE);
 
-            if (size == 0) {
-                print(ISER, "Connection %s:%d closed by user", clientIP, cport);
-                break;
-            }
+			if (size == 0) {
+				print(ISER, "Connection %s:%d closed by user", clientIP, cport);
+				break;
+			}
 
-            n = write(client, ibuffer, size);
+			n = write(client, ibuffer, size);
 			
 			if (n != size){
 				fprintf(stderr, "%s: write error: %s\n", self, strerror(errno));
 				break;
 			}
-        }
-    }
+		}
+	}
 
 	return true;
 }
@@ -378,15 +378,15 @@ void cleanup(void){
 
 // Get the current terminal size (rows and columns) and send resize instructions to the remote shell (stty rows x columns y)
 void resize(void) {
-    struct winsize w;
+	struct winsize w;
 
 	if (ioctl(STDOUT_FILENO, TIOCGWINSZ, &w) == -1){
 		fprintf(stderr, "%s: ioctl failed: %s\n", self, strerror(errno));
 		return;
 	}
-    
+	
 	int rows = w.ws_row;
-    int cols = w.ws_col;
+	int cols = w.ws_col;
 
 	char command[256];
 	snprintf(command, sizeof(command), "/bin/stty rows %d columns %d\n", rows, cols);
@@ -432,7 +432,7 @@ void stabilize(void){
 }
 
 int main(int argc, char **argv){
-    self = argv[0];
+	self = argv[0];
 
 	if (argc < 2){
 		fprintf(stderr, "%s: missing PORT operand\n\nusage: %s <PORT> [HOST]\n", self, self);
@@ -470,6 +470,5 @@ int main(int argc, char **argv){
 
 	sstdio();
 
-    return EXIT_SUCCESS;
+	return EXIT_SUCCESS;
 }
-
