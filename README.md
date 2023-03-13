@@ -7,14 +7,14 @@ It uses netcat-like functionality to provide asynchronous I/O operations on the 
 ## Example Compilation
 
 ```bash
-make
+$ make
 ```
 
 ## Syntax
 
 ```bash
 # Server mode (listen)
-./crsh-lite <LPORT>
+$ ./crsh-lite <LPORT>
 
 # Client Mode (connect)
 ./crsh-lite <RPORT> <RHOST>
@@ -23,6 +23,6 @@ make
 ## Example Usage
 
 ```bash
-./crsh-lite 9001
-./crsh-lite 1337 localhost
+$ ./crsh-lite 9001
+$ ./crsh-lite 1337 localhost
 ```
