@@ -10,7 +10,7 @@ It uses netcat-like functinality to provide asynchronous I/O operations on the r
 make
 ```
 
-## Example Usage
+## Syntax
 
 ```bash
 # Server mode (listen)
@@ -18,4 +18,11 @@ make
 
 # Client Mode (connect)
 ./crsh-lite <RPORT> <RHOST>
+```
+
+## Example Usage
+
+```bash
+./crsh-lite 9001
+./crsh-lite 1337 localhost
 ```
