@@ -17,7 +17,7 @@ $ make
 $ ./crsh-lite <LPORT>
 
 # Client Mode (connect)
-./crsh-lite <RPORT> <RHOST>
+$ ./crsh-lite <RPORT> <RHOST>
 ```
 
 ## Example Usage
