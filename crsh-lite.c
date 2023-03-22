@@ -117,15 +117,6 @@ void print(int mode, char *msg, ...){
 	return;
 }
 
-// Flush all standard I/O streams
-void ioFlush(void){
-	fflush(stdin);
-	fflush(stdout);
-	fflush(stderr);
-
-	return;
-}
-
 // Socket initalization - returns `true` upon success, and `false` upon failure
 bool init(void){
 	int option = 1;
@@ -235,30 +226,6 @@ bool init(void){
 	signal(SIGWINCH, sigwinch_handler);
 
 	return true;
-}
-
-// Send EOF (\x04) to the socket to simulate pressing CTRL+D in a shell
-int reof(void){
-	char eof[] = "\x04";
-
-	if (send(client, eof, strlen(eof), 0) == -1){
-		fprintf(stderr, "%s: %s: %s\n", self, "reof", strerror(errno));
-		return -1;
-	}
-
-	return EXIT_SUCCESS;
-}
-
-// Send SIGINT (\x03) to the socket to simulate pressing CTRL+C in a shell
-int rinit(void){
-	char sigint[] = "\x03";
-
-	if (send(client, sigint, sizeof(sigint), 0) == -1){
-		fprintf(stderr, "%s: %s: %s\n", self, "rinit", strerror(errno));
-		return -1;
-	}
-
-	return EXIT_SUCCESS;
 }
 
 // Simply run a command without returning output
