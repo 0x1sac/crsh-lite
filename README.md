@@ -4,7 +4,7 @@ crsh-lite is a light shell handler written in C, meant to make the process of re
 
 It uses netcat-like functionality to provide asynchronous I/O operations on the remote host. It also automatically spawns a PTY, stabilizes your prompt and resizes the remote terminal, as your local one changes.
 
-crsh-lite is stageless, and only requires a normal reverse or bind shell to be executed. Its essentially a netcat program, but you don't have to worry about spawning a PTY, press CTRL+Z, set terminal to raw mode, etc.
+crsh-lite is stageless, and only requires a normal reverse or bind shell to be executed. It's essentially a netcat program, but you don't have to worry about spawning a PTY, pressing CTRL+Z, setting your terminal to raw mode, etc.
 
 ## Example Compilation
 
