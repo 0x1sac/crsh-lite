@@ -418,7 +418,7 @@ int main(int argc, char **argv){
 
 	port = atoi(argv[1]);
 
-	if (port <= 1 || port > 65535){
+	if (port <= 0 || port > 65535){
 		fprintf(stderr, "%s: invalid port: please choose between 1-65535\n", self);
 		return EXIT_FAILURE;
 	}
